@@ -33,6 +33,7 @@ import (
 	"github.com/containernetworking/cni/pkg/version"
 	"github.com/containernetworking/plugins/pkg/ip"
 	"github.com/containernetworking/plugins/pkg/ipam"
+	"github.com/containernetworking/plugins/pkg/ns"
 	"github.com/sirupsen/logrus"
 
 	bv "github.com/containernetworking/plugins/pkg/utils/buildversion"
@@ -427,7 +428,12 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return fmt.Errorf("failed to find jail %s: %v", args.Netns, err)
 	}
 
-	hostInterface, containerInterface, err := setupEpair(jail, br, args.IfName, n.MTU, n.Vlan, n.mac)
+	nsJail, err := ns.GetCurrentNsJail(jail)
+	if err != nil {
+		return fmt.Errorf("failed to find Network Namespace jail %s: %v", nsJail.Name, err)
+	}
+
+	hostInterface, containerInterface, err := setupEpair(nsJail, br, args.IfName, n.MTU, n.Vlan, n.mac)
 	if err != nil {
 		return err
 	}
@@ -535,7 +541,7 @@ func cmdAdd(args *skel.CmdArgs) error {
 		_, _ = sysctl.Sysctl(fmt.Sprintf("net/ipv4/conf/%s/arp_notify", args.IfName), "1")*/
 
 		// Add the IP to the interface
-		if err := ipam.ConfigureIface(jail, args.IfName, result); err != nil {
+		if err := ipam.ConfigureIface(nsJail, args.IfName, result); err != nil {
 			return err
 		}
 
