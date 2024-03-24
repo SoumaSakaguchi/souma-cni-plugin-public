@@ -20,7 +20,7 @@ func GetCurrentNsJail(childJail gojail.Jail) (gojail.Jail, error) {
 		return nil, err
 	}
 
-	nsjail, err := gojail.JailGetByName(nsName)
+	nsJail, err := gojail.JailGetByName(nsName)
 	if err != nil {
 		return nil, err
 	}
