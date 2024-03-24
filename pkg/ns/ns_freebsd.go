@@ -15,7 +15,7 @@ const (
 )
 
 func GetCurrentNsJail(childJail gojail.Jail) (gojail.Jail, error) {
-	nsName, err := getNsPath(childJail.Name)
+	nsName, err := getNsPath(childJail.Name())
 	if err != nil {
 		return nil, err
 	}
