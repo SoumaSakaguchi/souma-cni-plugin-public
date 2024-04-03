@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func JailGetByPath(nsPath string) (string error) {
+func JailGetByPath(nsPath string) (string, error) {
 	info, err := os.Lstat(nsPath)
 	if err != nil {
 		return "", err
