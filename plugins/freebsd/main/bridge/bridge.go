@@ -422,18 +422,15 @@ func cmdAdd(args *skel.CmdArgs) error {
 	if err != nil {
 		return fmt.Errorf("failed in setupBridge: %v", err)
 	}
-
-	jail, err := gojail.JailGetByName(args.Netns)
+	
+	nsJailID, err := ns.JailGetByPath(args.Netns)
+	
+	jail, err := gojail.JailGetByName(nsJailID)
 	if err != nil {
 		return fmt.Errorf("failed to find jail %s: %v", args.Netns, err)
 	}
 
-	nsJail, err := ns.GetCurrentNsJail(jail)
-	if err != nil {
-		return fmt.Errorf("failed to find Network Namespace jail %s: %v", nsJail.Name, err)
-	}
-
-	hostInterface, containerInterface, err := setupEpair(nsJail, br, args.IfName, n.MTU, n.Vlan, n.mac)
+	hostInterface, containerInterface, err := setupEpair(jail, br, args.IfName, n.MTU, n.Vlan, n.mac)
 	if err != nil {
 		return err
 	}
@@ -541,7 +538,7 @@ func cmdAdd(args *skel.CmdArgs) error {
 		_, _ = sysctl.Sysctl(fmt.Sprintf("net/ipv4/conf/%s/arp_notify", args.IfName), "1")*/
 
 		// Add the IP to the interface
-		if err := ipam.ConfigureIface(nsJail, args.IfName, result); err != nil {
+		if err := ipam.ConfigureIface(jail, args.IfName, result); err != nil {
 			return err
 		}
 
