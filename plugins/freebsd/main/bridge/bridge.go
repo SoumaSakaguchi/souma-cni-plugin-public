@@ -424,7 +424,10 @@ func cmdAdd(args *skel.CmdArgs) error {
 	}
 	
 	nsJailID, err := ns.JailGetByPath(args.Netns)
-	
+	if err != nil {
+		return fmt.Errorf("faild in ns.JailGetByPath: %v", err)
+	}
+
 	jail, err := gojail.JailGetByName(nsJailID)
 	if err != nil {
 		return fmt.Errorf("failed to find jail %s: %v", args.Netns, err)
