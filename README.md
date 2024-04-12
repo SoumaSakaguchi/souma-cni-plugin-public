@@ -40,3 +40,8 @@ For any questions about CNI, please reach out via:
 - Slack: #cni on the [CNCF slack](https://slack.cncf.io/).
 
 If you have a _security_ issue to report, please do so privately to the email addresses listed in the [OWNERS](OWNERS.md) file.
+
+## Modfiy for oss-fun/souma-runj
+Changed the value given to the environment variable(`CNI\_NETNS`) from jail ID to a symbolic link for Network namespace compatible jails.
+
+* `bridge`: ADD
