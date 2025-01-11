@@ -1,5 +1,9 @@
 [![test](https://github.com/containernetworking/plugins/actions/workflows/test.yaml/badge.svg)](https://github.com/containernetworking/plugins/actions/workflows/test.yaml?query=branch%3Amaster)
 
+# 本レポジトリに関する注意点
+本レポジトリは、ポートフォリオ公開用に、一時的にPublicにしているものになります。
+ポートフォリオの利用を終了すると同時に、Privateに戻りますので、ご了承ください。
+
 # Plugins
 Some CNI network plugins, maintained by the containernetworking team. For more information, see the [CNI website](https://www.cni.dev).
 
